@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixel Portfolio</title>
+  <style>
+    /* ====== Base Styling ====== */
+    body {
+      margin: 0;
+      font-family: 'Press Start 2P', monospace, Arial;
+      background: #0d0d0d;
+      color: #e0e0e0;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: linear-gradient(90deg, #ffcc00, #ff0066);
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      color: #fff;
+      margin: 0;
+      text-shadow: 2px 2px #000;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 2px 2px #000; }
+      to { text-shadow: 2px 2px 10px #ffcc00; }
+    }
+
+    main {
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    section {
+      margin-bottom: 3rem;
+      padding: 2rem;
+      border: 4px solid #ffcc00;
+      border-radius: 8px;
+      background: #1a1a1a;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+      transition: transform 0.3s ease;
+    }
+
+    section:hover {
+      transform: scale(1.02);
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: #ffcc00;
+      text-shadow: 2px 2px #000;
+    }
+
+    p, a {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #ccc;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #ffcc00;
+    }
+
+    /* ====== Mini Game Styling ====== */
+    #gameCanvas {
+      border: 4px solid #ffcc00;
+      background: #000;
+      display: block;
+      margin: 1rem auto;
+      width: 100%;
+      max-width: 400px;
+      image-rendering: pixelated;
+    }
+
+    /* ====== Responsive ====== */
+    @media (max-width: 600px) {
+      body {
+        font-size: 12px;
+      }
+      header h1 {
+        font-size: 1.2rem;
+      }
+      section {
+        padding: 1rem;
+      }
+    }
+  </style>
+  <!-- Google Fonts for pixel-art vibe -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>✨ Asta's Pixel Portfolio ✨</h1>
+  </header>
+
+  <main>
+    <section>
+      <h2>👾 About Me</h2>
+      <p>Hi! I'm Asta, a developer who loves building games, apps, and cool projects in Python, GDScript, and C. This portfolio is inspired by retro pixel art, but with a sleek modern twist.</p>
+    </section>
+
+    <section>
+      <h2>🚀 Projects</h2>
+      <p>🔹 <a href="https://github.com/username/project1">Project 1</a></p>
+      <p>🔹 <a href="https://github.com/username/project2">Project 2</a></p>
+    </section>
+
+    <section>
+      <h2>🎮 Mini Game</h2>
+      <p>Move the square with arrow keys. Try to catch the yellow pixel!</p>
+      <canvas id="gameCanvas" width="400" height="400"></canvas>
+    </section>
+
+    <section>
+      <h2>📬 Contact</h2>
+      <p>Email: <a href="mailto:youremail@example.com">youremail@example.com</a></p>
+      <p>GitHub: <a href="https://github.com/username">github.com/username</a></p>
+    </section>
+  </main>
+
+  <script>
+    /* ====== Mini Game Code ====== */
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let player = { x: 200, y: 200, size: 20, color: "#58a6ff" };
+    let target = { x: Math.random() * 380, y: Math.random() * 380, size: 10, color: "#ffcc00" };
+    let score = 0;
+
+    function drawPixel(obj) {
+      ctx.fillStyle = obj.color;
+      ctx.fillRect(Math.floor(obj.x), Math.floor(obj.y), obj.size, obj.size);
+    }
+
+    function drawGame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawPixel(player);
+      drawPixel(target);
+      ctx.fillStyle = "#fff";
+      ctx.font = "12px 'Press Start 2P'";
+      ctx.fillText("Score: " + score, 10, 20);
+    }
+
+    function updateGame() {
+      if (Math.abs(player.x - target.x) < 15 && Math.abs(player.y - target.y) < 15) {
+        score++;
+        target.x = Math.random() * (canvas.width - target.size);
+        target.y = Math.random() * (canvas.height - target.size);
+      }
+    }
+
+    function gameLoop() {
+      updateGame();
+      drawGame();
+      requestAnimationFrame(gameLoop);
+    }
+
+    document.addEventListener("keydown", (e) => {
+      const speed = 10;
+      if (e.key === "ArrowUp") player.y -= speed;
+      if (e.key === "ArrowDown") player.y += speed;
+      if (e.key === "ArrowLeft") player.x -= speed;
+      if (e.key === "ArrowRight") player.x += speed;
+    });
+
+    gameLoop();
+  </script>
+</body>
+</html>
